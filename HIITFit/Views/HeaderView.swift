@@ -33,11 +33,30 @@
 import SwiftUI
 
 struct HeaderView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  
+  let excerciseName: String
+  
+  var body: some View {
+    VStack {
+      Text(excerciseName)
+        .font(.largeTitle)
+      HStack {
+        Image(systemName: "1.circle")
+        Image(systemName: "2.circle")
+        Image(systemName: "3.circle")
+        Image(systemName: "4.circle")
+      }
     }
+  }
 }
 
-#Preview {
-    HeaderView()
+struct HeaderView_Previews: PreviewProvider {
+  static var previews: some View {
+    HeaderView(excerciseName: "Squat")
+      .previewLayout(.sizeThatFits)
+  }
 }
+
+//#Preview {
+//  HeaderView(excerciseName: "Squat")
+//}

@@ -33,11 +33,45 @@
 import SwiftUI
 
 struct ExerciseView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  
+  let index: Int
+  let interval: TimeInterval = 3
+  var exercise: Exercise {
+    Exercise.exercises[index]
+  }
+  
+  var body: some View {
+    // GeometryReader is a container view that provides you with the screen’s measurements for whatever device you’re previewing or running on.
+    // screen or view????
+    GeometryReader { geometry in
+      VStack {
+        HeaderView(excerciseName: exercise.exerciseName)
+          .padding(.bottom)
+        
+        VideoPlayerView(videoName: exercise.videoName)
+          .frame(height: geometry.size.height * 0.45)
+        
+        Text(Date().addingTimeInterval(interval), style: .timer)
+          .font(.system(size: geometry.size.height * 0.07))
+        
+        Button("Start/Done Button") {
+          
+        }
+        .font(.title3)
+        .padding()
+        
+        RatingView()
+          .padding()
+        Spacer()
+        Button("History button") {
+          
+        }
+        .padding(.bottom)
+      }
     }
+  }
 }
 
 #Preview {
-    ExerciseView()
+  ExerciseView(index: 0)
 }

@@ -33,11 +33,25 @@
 import SwiftUI
 
 struct RatingView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  var body: some View {
+    HStack {
+      ForEach(0 ..< 5) { _ in
+        Image(systemName: "waveform.path.ecg")
+          .foregroundStyle(.gray)
+          .font(.largeTitle)
+      }
     }
+  }
 }
 
-#Preview {
+struct RatingView_Previews: PreviewProvider {
+  static var previews: some View {
     RatingView()
+      .previewLayout(.sizeThatFits)
+  }
 }
+
+//#Preview {
+//  RatingView()
+//    .previewLayout(.sizeThatFits)
+//}

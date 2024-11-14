@@ -35,10 +35,11 @@ import SwiftUI
 struct ContentView: View {
   var body: some View {
     TabView {
-      Text("Welcome")
-      Text("Excercise 1")
-      Text("Excercise 2")
+      ForEach(Exercise.exercises.indices, id: \.self) { number in
+        ExerciseView(index: number)
+      }
     }
+    .tabViewStyle(.page(indexDisplayMode: .never))
   }
 }
 

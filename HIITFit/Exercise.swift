@@ -31,3 +31,34 @@
 /// THE SOFTWARE.
 
 import Foundation
+
+struct Exercise {
+  let exerciseName: String
+  let videoName: String
+  
+  enum ExerciseEnum: String {
+    case squat = "Squat"
+    case stepUp = "Step Up"
+    case burpees = "Burpee"
+    case sunSalute = "Sun Salute"
+  }
+}
+
+extension Exercise {
+  // In an extension to Exercise, you initialize the exercises array as a type property.
+  // exerciseName and videoName are instance properties: Each Exercise instance has its own values for these properties. A type property belongs to the type, and you declare it with the static keyword. 
+  static let exercises = [
+    Exercise(
+      exerciseName: ExerciseEnum.squat.rawValue,
+      videoName: "squat"),
+    Exercise(
+      exerciseName: ExerciseEnum.stepUp.rawValue,
+      videoName: "step-up"),
+    Exercise(
+      exerciseName: ExerciseEnum.burpees.rawValue,
+      videoName: "burpee"),
+    Exercise(
+      exerciseName: ExerciseEnum.sunSalute.rawValue,
+      videoName: "sun-salute")
+  ]
+}
