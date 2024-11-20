@@ -31,3 +31,21 @@
 /// THE SOFTWARE.
 
 import Foundation
+
+/// `ExerciseDay` conforms to `Identifiable`.
+/// This protocol is useful for named types that you plan to use as elements of a collection, because you usually want to loop over these elements or display them in a list.
+struct ExerciseDay: Identifiable {
+  var id = UUID()
+  var date: Date
+  var exercises: [String] = []
+}
+
+struct HistoryStore {
+  var exerciseDays: [ExerciseDay] = []
+  
+  init() {
+    #if DEBUG
+    createDevData()
+    #endif
+  }
+}

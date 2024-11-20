@@ -45,7 +45,7 @@ struct ExerciseView: View {
     // screen or view????
     GeometryReader { geometry in
       VStack {
-        HeaderView(excerciseName: exercise.exerciseName)
+        HeaderView(titleText: exercise.exerciseName)
           .padding(.bottom)
         
         VideoPlayerView(videoName: exercise.videoName)
