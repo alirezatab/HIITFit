@@ -34,12 +34,17 @@ import SwiftUI
 
 struct ExerciseView: View {
   
+  @EnvironmentObject var history: HistoryStore
+  
   @State private var rating = 0
   @State private var showHistry = false
   @State private var showSuccess = false
+  @State private var timerDone = false
+  @State private var showTimer = false
+  
   @Binding var selectedTab: Int
   let index: Int
-  let interval: TimeInterval = 3
+  
   var lastExercise: Bool {
     index + 1 == Exercise.exercises.count
   }
@@ -49,21 +54,20 @@ struct ExerciseView: View {
   
   var startButton: some View {
     Button("Start Exercise") {
-
+      showTimer.toggle()
     }
   }
   
   var doneButton: some View {
     Button("Done") {
+      history.addDoneExercise(Exercise.exercises[index].exerciseName)
+      timerDone = false
+      showTimer.toggle()
       if lastExercise {
         showSuccess.toggle()
       } else {
         selectedTab += 1
       }
-    }
-    .sheet(isPresented: $showSuccess) {
-      SuccessView(selectedtab: $selectedTab)
-        .presentationDetents([.medium, .large])
     }
   }
   
@@ -71,7 +75,7 @@ struct ExerciseView: View {
     // GeometryReader is a container view that provides you with the screen’s measurements for whatever device you’re previewing or running on.
     // screen or view????
     GeometryReader { geometry in
-      VStack {
+      VStack(spacing: 0) {
         HeaderView(
           selectedTab: $selectedTab,
           titleText: exercise.exerciseName
@@ -81,31 +85,42 @@ struct ExerciseView: View {
         VideoPlayerView(videoName: exercise.videoName)
           .frame(height: geometry.size.height * 0.45)
         
-        Text(Date().addingTimeInterval(interval), style: .timer)
-          .font(.system(size: geometry.size.height * 0.07))
-        
         HStack(spacing: 150) {
           startButton
           doneButton
+          .disabled(!timerDone)
+          .sheet(isPresented: $showSuccess) {
+            SuccessView(selectedTab: $selectedTab)
+              .presentationDetents([.medium, .large])
+          }
         }
         .font(.title3)
         .padding()
-        
-        RatingView(rating: $rating)
-          .padding()
+
+        if showTimer {
+          TimerView(
+            timerDone: $timerDone,
+            size: geometry.size.height * 0.07
+          )
+        }
         Spacer()
+        RatingView(rating: $rating) // Move RatingView below Spacer
+          .padding()
+
+        
         Button("History") {
           showHistry.toggle()
         }
-        .padding(.bottom)
         .sheet(isPresented: $showHistry) {
           HistoryView(showHistory: $showHistry)
         }
+        .padding(.bottom)
       }
     }
   }
 }
 
 #Preview {
-  ExerciseView(selectedTab: .constant(3), index: 3)
+  ExerciseView(selectedTab: .constant(0), index: 0)
+    .environmentObject(HistoryStore())
 }

@@ -30,24 +30,61 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import Foundation
+import SwiftUI
 
-extension HistoryStore {
-  func createDevData() {
-    exerciseDays = [
-      ExerciseDay(
-        date: Date().addingTimeInterval(-86400), // yesterday
-        exercises: [
-          Exercise.exercises[0].exerciseName,
-          Exercise.exercises[1].exerciseName,
-          Exercise.exercises[2].exerciseName
-        ]),
-      ExerciseDay(
-        date: Date().addingTimeInterval(-86400 * 2), // 2 days before
-        exercises: [
-          Exercise.exercises[1].exerciseName,
-          Exercise.exercises[0].exerciseName
-        ])
-      ]
+/// `CountdownView` displays `timeRemaining` in a large rounded system font,
+/// surrounded by padding.
+struct CountdownView: View {
+  
+  let date: Date
+  @Binding var timeRemaining: Int
+  let size: Double
+  
+  var body: some View {
+    Text("\(timeRemaining)")
+      .font(.system(size: size, design: .rounded))
+      .padding()
+    /// The `.onChange(of: date)` modifier in `CountdownView` updates
+    /// `timeRemaining`, which also updates `timeRemaining` in `TimerView`.
+      .onChange(of: date) { _ in
+        timeRemaining -= 1
+      }
   }
+}
+
+struct TimerView: View {
+  
+  @State private var timeRemaining: Int = 3
+  @Binding var timerDone: Bool
+  let size: Double
+  
+  var body: some View {
+    /// You create a `TimelineView` with an
+    /// `animation(minimumInterval:paused:)` schedule to update
+    /// CountdownView every 1 second
+    TimelineView(
+      .animation(
+        minimumInterval: 1.0,
+        paused:  timeRemaining <= 0)) { context in
+          /// The `Content` closure receives a TimelineView.
+          /// `Context` that includes the date that triggered the update.
+          /// You send this to `CountdownView` along with a binding
+          /// to` timeRemaining`.
+          CountdownView(
+            date: context.date,
+            timeRemaining: $timeRemaining,
+            size: size)
+        }
+        .onChange(of: timeRemaining) { _ in
+          if timeRemaining < 1 {
+            ///When `timeRemaining` reaches 0, it sets `timerDone` to true.
+            ///This enables the `Done` button in `ExerciseView`.
+            timerDone = true
+          }
+        }
+  }
+}
+
+#Preview {
+  TimerView(timerDone: .constant(false), size: 90)
 }

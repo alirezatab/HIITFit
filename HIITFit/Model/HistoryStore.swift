@@ -40,12 +40,28 @@ struct ExerciseDay: Identifiable {
   var exercises: [String] = []
 }
 
-struct HistoryStore {
-  var exerciseDays: [ExerciseDay] = []
+class HistoryStore: ObservableObject {
+  @Published var exerciseDays: [ExerciseDay] = []
   
   init() {
     #if DEBUG
     createDevData()
     #endif
+  }
+  
+  func addDoneExercise(_ exerciseName: String) {
+    let today = Date()
+    /// The `date` of the first element of `exerciseDays` is the user’s most recent exercise day.
+    /// If `today` is the same as this date, you append the current `exerciseName` to the `exercises`
+    /// array of this `exerciseDay`.
+    if today.isSameDay(as: exerciseDays[0].date) {
+      print("Adding \(exerciseName)")
+      exerciseDays[0].exercises.append(exerciseName)
+    } else {
+      /// If `today` is a new day, you create a new `ExerciseDay` object and insert it at the
+      /// beginning of the `exerciseDays` array.
+      exerciseDays.insert(
+        ExerciseDay(date: today, exercises: [exerciseName]), at: 0)
+    }
   }
 }

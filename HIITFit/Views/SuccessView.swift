@@ -35,7 +35,7 @@ import SwiftUI
 struct SuccessView: View {
   
   @Environment(\.dismiss) var dismiss
-  @Binding var selectedtab: Int
+  @Binding var selectedTab: Int
   
   var body: some View {
     ZStack {
@@ -57,7 +57,7 @@ struct SuccessView: View {
       VStack {
         Spacer()
         Button("Continue") {
-          selectedtab = 9
+          selectedTab = 9
           dismiss()
         }
         .padding(.bottom)
@@ -67,5 +67,5 @@ struct SuccessView: View {
 }
 
 #Preview {
-  SuccessView(selectedtab: .constant(3))
+  SuccessView(selectedTab: .constant(3))
 }

@@ -17,6 +17,7 @@
 		C274B8602CE6953000C46D2D /* HistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274B85F2CE6953000C46D2D /* HistoryStore.swift */; };
 		C274B8632CE6992000C46D2D /* HistoryStoreDevData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274B8622CE6992000C46D2D /* HistoryStoreDevData.swift */; };
 		C274B8652CEE804B00C46D2D /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274B8642CEE804B00C46D2D /* SuccessView.swift */; };
+		C274B8672CEFD18200C46D2D /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274B8662CEFD18200C46D2D /* TimerView.swift */; };
 		CD30C924251474DC0049DB93 /* HIITFitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD30C923251474DC0049DB93 /* HIITFitApp.swift */; };
 		CD30C926251474DC0049DB93 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD30C925251474DC0049DB93 /* ContentView.swift */; };
 		CD30C928251474DD0049DB93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD30C927251474DD0049DB93 /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 		C274B85F2CE6953000C46D2D /* HistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStore.swift; sourceTree = "<group>"; };
 		C274B8622CE6992000C46D2D /* HistoryStoreDevData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStoreDevData.swift; sourceTree = "<group>"; };
 		C274B8642CEE804B00C46D2D /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
+		C274B8662CEFD18200C46D2D /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		CD30C920251474DC0049DB93 /* HIITFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HIITFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD30C923251474DC0049DB93 /* HIITFitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HIITFitApp.swift; sourceTree = "<group>"; };
 		CD30C925251474DC0049DB93 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				C274B8522CE451C500C46D2D /* HeaderView.swift */,
 				C274B85C2CE68E2C00C46D2D /* HistoryView.swift */,
 				C274B8642CEE804B00C46D2D /* SuccessView.swift */,
+				C274B8662CEFD18200C46D2D /* TimerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -239,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C274B8672CEFD18200C46D2D /* TimerView.swift in Sources */,
 				C2158E1B2CE3411800B0C09E /* ExerciseView.swift in Sources */,
 				C274B8552CE45B8500C46D2D /* Exercise.swift in Sources */,
 				C2158E192CE3410500B0C09E /* WelcomeView.swift in Sources */,
@@ -385,7 +389,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"HIITFit/Preview Content\"";
-				DEVELOPMENT_TEAM = 7B7W92SZ5J;
+				DEVELOPMENT_TEAM = CD2SK749ZU;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HIITFit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16;
@@ -409,7 +413,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"HIITFit/Preview Content\"";
-				DEVELOPMENT_TEAM = 7B7W92SZ5J;
+				DEVELOPMENT_TEAM = CD2SK749ZU;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HIITFit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16;
