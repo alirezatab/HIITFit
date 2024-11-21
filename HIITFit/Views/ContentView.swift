@@ -33,14 +33,23 @@
 import SwiftUI
 
 struct ContentView: View {
+
+  @State private var selectedTab = 9
   var body: some View {
-    TabView {
-      ForEach(Exercise.exercises.indices, id: \.self) { number in
-        ExerciseView(index: number)
+    TabView(selection: $selectedTab) {
+      /// 1 - You pass the binding `$selectedTab` to `WelcomeView` and
+      ///  `ExerciseView` so `TabView` can respond when they change its value.
+      WelcomeView(selectedTab: $selectedTab)
+        .tag(9)
+      ForEach(Exercise.exercises.indices, id: \.self) { index in
+        ExerciseView(selectedTab: $selectedTab,
+                     index: index)
+          .tag(index)
       }
     }
-    .tabViewStyle(.page(indexDisplayMode: .never))
+    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
   }
+
 }
 
 struct ContentView_Previews: PreviewProvider {

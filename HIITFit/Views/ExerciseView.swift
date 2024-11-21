@@ -34,10 +34,37 @@ import SwiftUI
 
 struct ExerciseView: View {
   
+  @State private var rating = 0
+  @State private var showHistry = false
+  @State private var showSuccess = false
+  @Binding var selectedTab: Int
   let index: Int
   let interval: TimeInterval = 3
+  var lastExercise: Bool {
+    index + 1 == Exercise.exercises.count
+  }
   var exercise: Exercise {
     Exercise.exercises[index]
+  }
+  
+  var startButton: some View {
+    Button("Start Exercise") {
+
+    }
+  }
+  
+  var doneButton: some View {
+    Button("Done") {
+      if lastExercise {
+        showSuccess.toggle()
+      } else {
+        selectedTab += 1
+      }
+    }
+    .sheet(isPresented: $showSuccess) {
+      SuccessView(selectedtab: $selectedTab)
+        .presentationDetents([.medium, .large])
+    }
   }
   
   var body: some View {
@@ -45,8 +72,11 @@ struct ExerciseView: View {
     // screen or view????
     GeometryReader { geometry in
       VStack {
-        HeaderView(titleText: exercise.exerciseName)
-          .padding(.bottom)
+        HeaderView(
+          selectedTab: $selectedTab,
+          titleText: exercise.exerciseName
+        )
+        .padding(.bottom)
         
         VideoPlayerView(videoName: exercise.videoName)
           .frame(height: geometry.size.height * 0.45)
@@ -54,24 +84,28 @@ struct ExerciseView: View {
         Text(Date().addingTimeInterval(interval), style: .timer)
           .font(.system(size: geometry.size.height * 0.07))
         
-        Button("Start/Done Button") {
-          
+        HStack(spacing: 150) {
+          startButton
+          doneButton
         }
         .font(.title3)
         .padding()
         
-        RatingView()
+        RatingView(rating: $rating)
           .padding()
         Spacer()
-        Button("History button") {
-          
+        Button("History") {
+          showHistry.toggle()
         }
         .padding(.bottom)
+        .sheet(isPresented: $showHistry) {
+          HistoryView(showHistory: $showHistry)
+        }
       }
     }
   }
 }
 
 #Preview {
-  ExerciseView(index: 0)
+  ExerciseView(selectedTab: .constant(3), index: 3)
 }
