@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		C2158E192CE3410500B0C09E /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2158E182CE3410500B0C09E /* WelcomeView.swift */; };
 		C2158E1B2CE3411800B0C09E /* ExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2158E1A2CE3411800B0C09E /* ExerciseView.swift */; };
+		C23CEBBA2CF529B700814249 /* RaisedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23CEBB92CF529B700814249 /* RaisedButton.swift */; };
+		C23CEBBC2CF532A400814249 /* EmbossedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23CEBBB2CF532A400814249 /* EmbossedButton.swift */; };
+		C23CEBBE2CF69A0100814249 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23CEBBD2CF69A0100814249 /* ContainerView.swift */; };
+		C23CEBC02CF69CA200814249 /* WelcomeImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23CEBBF2CF69CA200814249 /* WelcomeImages.swift */; };
+		C23CEBC22CF6A2EF00814249 /* GradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23CEBC12CF6A2EF00814249 /* GradientBackground.swift */; };
 		C274B8532CE451C500C46D2D /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274B8522CE451C500C46D2D /* HeaderView.swift */; };
 		C274B8552CE45B8500C46D2D /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274B8542CE45B8500C46D2D /* Exercise.swift */; };
 		C274B8572CE5A90100C46D2D /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C274B8562CE5A90100C46D2D /* RatingView.swift */; };
@@ -33,6 +38,11 @@
 /* Begin PBXFileReference section */
 		C2158E182CE3410500B0C09E /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		C2158E1A2CE3411800B0C09E /* ExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseView.swift; sourceTree = "<group>"; };
+		C23CEBB92CF529B700814249 /* RaisedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaisedButton.swift; sourceTree = "<group>"; };
+		C23CEBBB2CF532A400814249 /* EmbossedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbossedButton.swift; sourceTree = "<group>"; };
+		C23CEBBD2CF69A0100814249 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		C23CEBBF2CF69CA200814249 /* WelcomeImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeImages.swift; sourceTree = "<group>"; };
+		C23CEBC12CF6A2EF00814249 /* GradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackground.swift; sourceTree = "<group>"; };
 		C274B8522CE451C500C46D2D /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		C274B8542CE45B8500C46D2D /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
 		C274B8562CE5A90100C46D2D /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
@@ -79,6 +89,11 @@
 				C274B85C2CE68E2C00C46D2D /* HistoryView.swift */,
 				C274B8642CEE804B00C46D2D /* SuccessView.swift */,
 				C274B8662CEFD18200C46D2D /* TimerView.swift */,
+				C23CEBB92CF529B700814249 /* RaisedButton.swift */,
+				C23CEBBB2CF532A400814249 /* EmbossedButton.swift */,
+				C23CEBBD2CF69A0100814249 /* ContainerView.swift */,
+				C23CEBBF2CF69CA200814249 /* WelcomeImages.swift */,
+				C23CEBC12CF6A2EF00814249 /* GradientBackground.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -243,11 +258,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				C274B8672CEFD18200C46D2D /* TimerView.swift in Sources */,
+				C23CEBBA2CF529B700814249 /* RaisedButton.swift in Sources */,
+				C23CEBBE2CF69A0100814249 /* ContainerView.swift in Sources */,
 				C2158E1B2CE3411800B0C09E /* ExerciseView.swift in Sources */,
 				C274B8552CE45B8500C46D2D /* Exercise.swift in Sources */,
+				C23CEBC22CF6A2EF00814249 /* GradientBackground.swift in Sources */,
 				C2158E192CE3410500B0C09E /* WelcomeView.swift in Sources */,
 				C274B8572CE5A90100C46D2D /* RatingView.swift in Sources */,
 				C274B8602CE6953000C46D2D /* HistoryStore.swift in Sources */,
+				C23CEBC02CF69CA200814249 /* WelcomeImages.swift in Sources */,
 				C274B8632CE6992000C46D2D /* HistoryStoreDevData.swift in Sources */,
 				C274B8652CEE804B00C46D2D /* SuccessView.swift in Sources */,
 				CD30C926251474DC0049DB93 /* ContentView.swift in Sources */,
@@ -256,6 +275,7 @@
 				CD30C93F25147A8C0049DB93 /* DateExtension.swift in Sources */,
 				CD30C924251474DC0049DB93 /* HIITFitApp.swift in Sources */,
 				CD30C94025147A8C0049DB93 /* ImageExtension.swift in Sources */,
+				C23CEBBC2CF532A400814249 /* EmbossedButton.swift in Sources */,
 				C274B8532CE451C500C46D2D /* HeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

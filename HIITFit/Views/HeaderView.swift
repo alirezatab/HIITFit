@@ -42,13 +42,24 @@ struct HeaderView: View {
     VStack {
       Text(titleText)
         .font(.largeTitle)
+        .fontWeight(.black)
+        .foregroundStyle(.white)
       HStack {
         ForEach(Exercise.exercises.indices, id: \.self) { index in
-          let fill = index == selectedTab ? ".fill" : ""
-          Image(systemName: "\(index + 1).circle\(fill)")
-            .onTapGesture {
-              selectedTab = index
-            }
+          // My attempt
+          ZStack {
+            Image(systemName: "circle.fill")
+              .resizedToFill(width: 32, height: 32)
+              .foregroundStyle(.white)
+              .opacity(index == selectedTab ? 0.5 : 0.0)
+            
+            Image(systemName: "circle.fill")
+              .resizedToFill(width: 16, height: 16)
+              .foregroundStyle(.white)
+          }
+          .onTapGesture {
+            selectedTab = index
+          }
         }
       }
       .font(.title2)

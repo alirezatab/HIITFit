@@ -1,15 +1,15 @@
 /// Copyright (c) 2024 Kodeco LLC
-/// 
+///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
 /// distribute, sublicense, create a derivative work, and/or sell copies of the
 /// Software in any work that is designed, intended, or marketed for pedagogical or
@@ -17,7 +17,7 @@
 /// or information technology.  Permission for such use, copying, modification,
 /// merger, publication, distribution, sublicensing, creation of derivative works,
 /// or sale is expressly withheld.
-/// 
+///
 /// This project and source code may use libraries or frameworks that are
 /// released under various Open-Source licenses. Use of those libraries and
 /// frameworks are governed by their own individual licenses.
@@ -32,64 +32,32 @@
 
 import SwiftUI
 
-struct WelcomeView: View {
-  
-  @State private var showHistory = false
-  @Binding var selectedTab: Int
-  
-  var getStartedButton: some View {
-    RaisedButton(buttonText: "Get Started") {
-      selectedTab = 0
-    }
-    .padding()
+struct GradientBackground: View {
+  var gradient: Gradient {
+    let color1 = Color("gradient-top")
+    let color2 = Color("gradient-bottom")
+    let background = Color("background")
+    
+    // Here you use purple to blue for 90% of the gradient. At the 90% mark, you switch to the background color for the rest of the gradient. As you have two stops right next to each other, you get a sharp line across instead of a gradient.
+    
+    // If you want a striped background, you can achieve this using color stops in this way.
+    return Gradient(
+      stops: [
+        Gradient.Stop(color: color1, location: 0),
+        Gradient.Stop(color: color2, location: 0.9),
+        Gradient.Stop(color: background, location: 0.9),
+        Gradient.Stop(color: background, location: 1)
+    ])
   }
-  
-  var historyButton: some View {
-    Button(
-      action: {
-        showHistory = true
-      }, label: {
-        Text("History")
-          .fontWeight(.bold)
-          .padding([.leading, .trailing], 5)
-      })
-    .padding(.bottom, 10)
-    .buttonStyle(EmbossedButtonStyle())
-  }
-  
   var body: some View {
-    GeometryReader { geometry in
-      VStack {
-        HeaderView(selectedTab: $selectedTab, titleText: "Welcome")
-        Spacer()
-        // Container View
-        
-        ContainerView {
-          ViewThatFits {
-            VStack {
-              WelcomeView.images
-              WelcomeView.welcomeText
-              getStartedButton
-              Spacer()
-              historyButton
-            }
-            VStack {
-              WelcomeView.welcomeText
-              getStartedButton
-              Spacer()
-              historyButton
-            }
-          }
-        }
-        .frame(height: geometry.size.height * 0.8)
-      }
-      .sheet(isPresented: $showHistory) {
-        HistoryView(showHistory: $showHistory)
-      }
-    }
+    LinearGradient(
+      gradient: gradient,
+      startPoint: .top,
+      endPoint: .bottom)
+    .ignoresSafeArea()
   }
 }
 
 #Preview {
-  WelcomeView(selectedTab: .constant(9))
+  GradientBackground()
 }

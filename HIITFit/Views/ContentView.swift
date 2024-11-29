@@ -37,18 +37,22 @@ struct ContentView: View {
   @SceneStorage("selectedTab") private var selectedTab = 9
   
   var body: some View {
-    TabView(selection: $selectedTab) {
-      /// 1 - You pass the binding `$selectedTab` to `WelcomeView` and
-      ///  `ExerciseView` so `TabView` can respond when they change its value.
-      WelcomeView(selectedTab: $selectedTab)
-        .tag(9)
-      ForEach(Exercise.exercises.indices, id: \.self) { index in
-        ExerciseView(selectedTab: $selectedTab,
-                     index: index)
+    ZStack {
+      GradientBackground()
+      
+      TabView(selection: $selectedTab) {
+        /// 1 - You pass the binding `$selectedTab` to `WelcomeView` and
+        ///  `ExerciseView` so `TabView` can respond when they change its value.
+        WelcomeView(selectedTab: $selectedTab)
+          .tag(9)
+        ForEach(Exercise.exercises.indices, id: \.self) { index in
+          ExerciseView(selectedTab: $selectedTab,
+                       index: index)
           .tag(index)
+        }
       }
+      .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
     }
-    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
   }
 
 }
