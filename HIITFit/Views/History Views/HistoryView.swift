@@ -33,42 +33,83 @@
 import SwiftUI
 
 struct HistoryView: View {
-    
-  @Binding var showHistory: Bool
-  @EnvironmentObject var history: HistoryStore
   
-  var body: some View {
-    ZStack(alignment: .topTrailing) {
-      Button(action: { showHistory.toggle() }) {
+  @EnvironmentObject var history: HistoryStore
+  @Binding var showHistory: Bool
+  @State private var addMode = false
+  
+  var headerView: some View {
+    HStack {
+      Button {
+        addMode = true
+      } label: {
+        Image(systemName: "plus")
+      }
+      .padding(.trailing)
+
+      EditButton()
+      Spacer()
+      Text("History")
+        .font(.title)
+      Spacer()
+      Button {
+        showHistory.toggle()
+      } label: {
         Image(systemName: "xmark.circle")
       }
       .font(.title)
-      .padding()
-      
-      VStack {
-        Text("History")
-          .font(.title)
-          .padding()
-        
-        Form {
-          ForEach(history.exerciseDays) { day in
-            Section(
-              header:
-                Text(day.date.formatted(as: "MMM d"))
-                .font(.headline)
-            ) {
-              ForEach(day.exercises, id: \.self) { exercise in
-                Text(exercise)
-              }
-            }
-          }
+    }
+  }
+  
+  func dayView(day: ExerciseDay) -> some View {
+    DisclosureGroup {
+      exerciseView(day: day)
+        .deleteDisabled(true)
+    } label: {
+      Text(day.date.formatted(as: "d MMM YYYY"))
+        .font(.headline)
+    }
+
+  }
+  
+  func exerciseView(day: ExerciseDay) -> some View {
+    ForEach(day.uniqueExercises, id: \.self) { exercise in
+      Text(exercise)
+        .badge(day.countExercises(exercise))
+    }
+  }
+  
+  var body: some View {
+    VStack {
+      // Now when you’re in add mode, the buttons in the navigation bar disappear. You embed the conditional in a group to keep the same padding on both views.
+      Group {
+        if addMode {
+          Text("History")
+            .font(.title)
+        } else {
+          headerView
         }
       }
+      .padding()
+      
+      /// Note: You can of course do anything with your data in Swift. If you had the requirement of deleting a single exercise, you might set up your data differently, so that the top level of a list would be by exercise, rather than by date. Alternatively, instead of using the built in editActions of a list, you can use the onDelete(perform:) modifier for deletion and write the deletion code yourself.
+      List($history.exerciseDays, editActions: [.delete]) { $day in
+        dayView(day: day)
+      }
+      if addMode {
+        AddHistoryView(addMode: $addMode)
+      }
+    }
+    .onAppear {
+      try? history.save()
     }
   }
 }
 
-#Preview {
-  HistoryView(showHistory: .constant(true))
-    .environmentObject(HistoryStore())
+struct HistoryView_Previews: PreviewProvider {
+  static var history = HistoryStore(preview: true)
+  static var previews: some View {
+    HistoryView(showHistory: .constant(true))
+      .environmentObject(history)
+  }
 }

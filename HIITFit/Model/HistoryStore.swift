@@ -38,6 +38,16 @@ struct ExerciseDay: Identifiable {
   var id = UUID()
   var date: Date
   var exercises: [String] = []
+  
+  var uniqueExercises: [String] {
+    // you take the array of exercises, create a set of unique instances, and then return an array created from that set, sorted alphabetically.
+    Array(Set(exercises).sorted(by: <))
+  }
+  
+  //Here you pass in an exercise name and retrieve all the instances of that exercise from the exercises array. You return the count of those instances.
+  func countExercises(_ exercise: String) -> Int {
+    exercises.filter { $0 == exercise }.count
+  }
 }
 
 class HistoryStore: ObservableObject {
@@ -49,29 +59,49 @@ class HistoryStore: ObservableObject {
   
   @Published var exerciseDays: [ExerciseDay] = []
   @Published var loadingError = false
-  
-  let result: (ExerciseDay) -> [Any] = { exerciseDay in
-    [
-      exerciseDay.id.uuidString,
-      exerciseDay.date,
-      exerciseDay.exercises
-    ]
-  }
     
   // You add the file name to the documents path. This gives you the full URL of the file to which you’ll write the history data.
   var dataURL: URL {
     URL.documentsDirectory.appendingPathComponent("history.plist")
   }
   
-  init() {
-    #if DEBUG
-    // createDevData()
-    #endif
+  init(preview: Bool = false) {
     do {
       try load()
     } catch {
       loadingError = true
     }
+    #if DEBUG
+    if preview {
+      createDevData()
+    } else {
+      if exerciseDays.isEmpty {
+        copyHistoryTestData()
+        try? load()
+      }
+    }
+    #endif
+  }
+  
+  func addExercise(date: Date, exerciseName: String) {
+    let exerciseDay = ExerciseDay(date: date, exercises: [exerciseName])
+    // 1 - You find the first index in the exerciseDays array where the date is less than or equal to the passed-in date. The where part is a comparison closure that returns true when the criterion is matched. The index of the first true comparison is then passed back to index. Here, the conditional will fail if the passed-in date is earlier than the array dates. You want to compare the dates on a daily basis, so you use yearMonthDay from DateExtension.swift, to exclude the time.
+    if let index = exerciseDays.firstIndex(
+      where: { $0.date.yearMonthDay <= date.yearMonthDay}) {
+      // 2 - If you find a date in the array that’s the same as the passed-in date, you append the exercise name to the already existing array element.
+      if date.isSameDay(as: exerciseDays[index].date) {
+        exerciseDays[index].exercises.append(exerciseName)
+        // 3 - If the date doesn’t already exist in the array, then insert it at the appropriate position.
+      } else {
+        exerciseDays.insert(exerciseDay, at: index)
+      }
+      // 4 - If the date is earlier than all the dates in the array, or the array is empty, then append the date to the array.
+    } else {
+      exerciseDays.append(exerciseDay)
+    }
+    
+    // 5 - Save the history data.
+    try? save()
   }
   
   func addDoneExercise(_ exerciseName: String) {
@@ -97,10 +127,11 @@ class HistoryStore: ObservableObject {
   }
   
   func load() throws {
+    guard let data = try? Data(contentsOf: dataURL) else { return }
+
     do {
       /// Read the data file into a byte buffer. This buffer is in the property list format.
       /// If `history.plist` doesn’t exist on disk, `Data(contentsOf:)` will throw an error. Throwing an error is not correct in this case, as there will be no history when your user first launches your app. You’ll fix this error at the end of this chapter.
-      guard let data = try? Data(contentsOf: dataURL) else { return }
       
       /// Convert the property list format into a format that your app can read.
       let plistData = try PropertyListSerialization.propertyList(
