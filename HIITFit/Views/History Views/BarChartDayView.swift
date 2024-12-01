@@ -1,15 +1,15 @@
 /// Copyright (c) 2024 Kodeco LLC
-/// 
+///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
 /// distribute, sublicense, create a derivative work, and/or sell copies of the
 /// Software in any work that is designed, intended, or marketed for pedagogical or
@@ -17,7 +17,7 @@
 /// or information technology.  Permission for such use, copying, modification,
 /// merger, publication, distribution, sublicensing, creation of derivative works,
 /// or sale is expressly withheld.
-/// 
+///
 /// This project and source code may use libraries or frameworks that are
 /// released under various Open-Source licenses. Use of those libraries and
 /// frameworks are governed by their own individual licenses.
@@ -31,88 +31,49 @@
 /// THE SOFTWARE.
 
 import SwiftUI
+import Charts
 
-struct WelcomeView: View {
+struct BarChartDayView: View {
   
-  @EnvironmentObject var historyStore: HistoryStore
-  @State private var showHistory = false
-  @State private var showReports = false
-  @Binding var selectedTab: Int
+  let day: ExerciseDay
   
-  var getStartedButton: some View {
-    RaisedButton(buttonText: "Get Started") {
-      selectedTab = 0
+  var body: some View {
+    /*
+     Instructions on Charts for future refrence to undestand the UI
+    // 1 - Declare that you are creating a Swift Chart.
+    Chart {
+      // 2 - inside the chart, determine what sort of mark to use. This chart will be a bar chart, but it could also be an area, line or point chart.
+      BarMark(
+        // 3 - On the x-axis, you create a plottable value with a label and a string value.
+        x: .value("Name", "Burpee"),
+        // 4 - Similarly, on the y-axis, you create a plottable value with a label and an integer value.
+        y: .value("Count", 5))
+      // 5 - Repeat the marks for each piece of data you want to chart.
+      BarMark(
+        x: .value("Name", "Squat"),
+        y: .value("Count", 2))
+    }
+     */
+    
+    Chart {
+      ForEach(Exercise.names, id: \.self) { name in
+        BarMark(
+          x: .value(name, name),
+          y: .value("Total Count", day.countExercises(name)))
+        .foregroundStyle(Color("history-bar"))
+      }
+      // You also add a rule mark to show that you should perform at least one of the exercises per day.
+      RuleMark(y: .value("Exercise", 1))
+        .foregroundStyle(.red)
     }
     .padding()
   }
-  
-  var historyButton: some View {
-    Button(
-      action: {
-        showHistory = true
-      }, label: {
-        Text("History")
-          .fontWeight(.bold)
-      })
-    .buttonStyle(EmbossedButtonStyle())
-  }
-  
-  var reportsButton: some View {
-    Button(action: {
-      showReports = true
-    }, label: {
-      Text("Reports")
-        .fontWeight(.bold)
-    })
-    .buttonStyle(EmbossedButtonStyle())
-  }
-  
-  var buttonHStack: some View {
-    HStack(spacing: 40) {
-      historyButton
-      reportsButton
-    }
-    .padding(10)
-  }
-  
-  var body: some View {
-    GeometryReader { geometry in
-      VStack {
-        HeaderView(selectedTab: $selectedTab, titleText: "Welcome")
-        Spacer()
-        // Container View
-        
-        ContainerView {
-          ViewThatFits {
-            VStack {
-              WelcomeView.images
-              WelcomeView.welcomeText
-              getStartedButton
-              Spacer()
-              buttonHStack
-            }
-            VStack {
-              WelcomeView.welcomeText
-              getStartedButton
-              Spacer()
-              buttonHStack
-            }
-          }
-        }
-        .frame(height: geometry.size.height * 0.8)
-      }
-      .sheet(isPresented: $showHistory) {
-        HistoryView(showHistory: $showHistory)
-      }
-      .sheet(isPresented: $showReports) {
-        BarChartWeekView()
-      }
-      
-    }
-  }
 }
 
-#Preview {
-  WelcomeView(selectedTab: .constant(9))
-    .environmentObject(HistoryStore(preview: true))
+struct BarChartDayView_Previews: PreviewProvider {
+  static var history = HistoryStore(preview: true)
+  static var previews: some View {
+    BarChartDayView(day: history.exerciseDays[0])
+      .environmentObject(history)
+  }
 }

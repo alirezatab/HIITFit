@@ -35,7 +35,6 @@ import SwiftUI
 struct ExerciseView: View {
   
   @EnvironmentObject var history: HistoryStore
-  
   @State private var showHistory = false
   @State private var showSuccess = false
   @State private var timerDone = false
@@ -86,43 +85,53 @@ struct ExerciseView: View {
   var body: some View {
     // GeometryReader is a container view that provides you with the screen’s measurements for whatever device you’re previewing or running on.
     // screen or view????
+    let exerciseName = Exercise.exercises[index].exerciseName
+
     GeometryReader { geometry in
       VStack(spacing: 0) {
         HeaderView(
           selectedTab: $selectedTab,
-          titleText: exercise.exerciseName)
+          titleText: exerciseName)
         .padding(.bottom)
-                
         Spacer()
-        
         ContainerView {
           VStack {
             VideoPlayerView(videoName: exercise.videoName)
               .frame(height: geometry.size.height * 0.35)
               .padding(20)
-            
             HStack(spacing: 150) {
               startButton
-              doneButton
-                .disabled(!timerDone)
+                .padding([.leading, .trailing], geometry.size.width * 0.1)
+                .sheet(isPresented: $showTimer) {
+                  TimerView(
+                    timerDone: $timerDone,
+                    exerciseName: exerciseName)
+                  .onDisappear {
+                    if timerDone {
+                      history.addDoneExercise(Exercise.exercises[index].exerciseName)
+                      timerDone = false
+                      if lastExercise {
+                        showSuccess.toggle()
+                      } else {
+                        withAnimation {
+                          selectedTab += 1
+                        }
+                      }
+                    }
+                  }
+                }
                 .sheet(isPresented: $showSuccess) {
                   SuccessView(selectedTab: $selectedTab)
                     .presentationDetents([.medium, .large])
                 }
+                .font(.title3)
+                .padding()
             }
             .font(.title3)
             .padding()
-            
-            if showTimer {
-              TimerView(
-                timerDone: $timerDone,
-                size: geometry.size.height * 0.07
-              )
-            }
             Spacer()
             RatingView(exerciseIndex: index) // Move RatingView below Spacer
               .padding()
-            
             historyButton
               .sheet(isPresented: $showHistory) {
                 HistoryView(showHistory: $showHistory)

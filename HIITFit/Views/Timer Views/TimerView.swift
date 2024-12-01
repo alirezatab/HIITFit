@@ -42,7 +42,9 @@ struct CountdownView: View {
   
   var body: some View {
     Text("\(timeRemaining)")
-      .font(.system(size: size, design: .rounded))
+      .font(.system(size: 90, design: .rounded))
+      .fontWeight(.heavy)
+      .frame(minWidth: 180, maxWidth: 200, minHeight: 180, maxHeight: 200)
       .padding()
     /// The `.onChange(of: date)` modifier in `CountdownView` updates
     /// `timeRemaining`, which also updates `timeRemaining` in `TimerView`.
@@ -54,37 +56,72 @@ struct CountdownView: View {
 
 struct TimerView: View {
   
+  @Environment(\.dismiss) var dismiss
   @State private var timeRemaining: Int = 3
   @Binding var timerDone: Bool
-  let size: Double
+  let exerciseName: String
   
   var body: some View {
-    /// You create a `TimelineView` with an
-    /// `animation(minimumInterval:paused:)` schedule to update
-    /// CountdownView every 1 second
-    TimelineView(
-      .animation(
-        minimumInterval: 1.0,
-        paused:  timeRemaining <= 0)) { context in
-          /// The `Content` closure receives a TimelineView.
-          /// `Context` that includes the date that triggered the update.
-          /// You send this to `CountdownView` along with a binding
-          /// to` timeRemaining`.
-          CountdownView(
-            date: context.date,
-            timeRemaining: $timeRemaining,
-            size: size)
+    GeometryReader { geometry in
+      ZStack {
+        Color("background")
+          .ignoresSafeArea()
+        let gradient = Gradient(stops: [
+          Gradient.Stop(color: Color("gradient-top"), location: 0.7),
+          Gradient.Stop(color: Color("gradient-bottom"), location: 1.1)
+        ])
+        Circle()
+          .foregroundStyle(gradient)
+          .position(x: geometry.size.width * 0.5, y: -geometry.size.width * 0.2)
+        VStack {
+          Text(exerciseName)
+            .font(.largeTitle)
+            .fontWeight(.black)
+            .foregroundStyle(.white)
+            .padding(.top, 20)
+          Spacer()
         }
-        .onChange(of: timeRemaining) { _ in
-          if timeRemaining < 1 {
-            ///When `timeRemaining` reaches 0, it sets `timerDone` to true.
-            ///This enables the `Done` button in `ExerciseView`.
-            timerDone = true
+        /// You create a `TimelineView` with an
+        /// `animation(minimumInterval:paused:)` schedule to update
+        /// CountdownView every 1 second
+        TimelineView(
+          .animation(
+            minimumInterval: 1.0,
+            paused:  timeRemaining <= 0)) { context in
+              /// The `Content` closure receives a TimelineView.
+              /// `Context` that includes the date that triggered the update.
+              /// You send this to `CountdownView` along with a binding
+              /// to` timeRemaining`.
+              IndentView {
+                CountdownView(
+                  date: context.date,
+                  timeRemaining: $timeRemaining,
+                  size: geometry.size.width)
+              }
+            }
+            .onChange(of: timeRemaining) { _ in
+              if timeRemaining < 1 {
+                ///When `timeRemaining` reaches 0, it sets `timerDone` to true.
+                ///This enables the `Done` button in `ExerciseView`.
+                timerDone = true
+              }
+            }
+        VStack {
+          Spacer()
+          RaisedButton(buttonText: "Done") {
+            print("pressed")
+            dismiss()
           }
+          .opacity(timerDone ? 1 : 0)
+          .padding(.horizontal, 30)
+          .padding(.bottom, 20)
+          .disabled(!timerDone)
         }
+      }
+    }
   }
 }
 
 #Preview {
-  TimerView(timerDone: .constant(false), size: 90)
+  TimerView(timerDone: .constant(false), exerciseName: "Step Up")
 }

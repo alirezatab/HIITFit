@@ -1,4 +1,4 @@
-/// Copyright (c) 2024 Kodeco LLC
+///// Copyright (c) 2022 Kodeco LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,87 +32,58 @@
 
 import SwiftUI
 
-struct WelcomeView: View {
-  
-  @EnvironmentObject var historyStore: HistoryStore
-  @State private var showHistory = false
-  @State private var showReports = false
-  @Binding var selectedTab: Int
-  
-  var getStartedButton: some View {
-    RaisedButton(buttonText: "Get Started") {
-      selectedTab = 0
-    }
-    .padding()
+struct IndentView<Content: View>: View {
+  var content: Content
+
+  init(@ViewBuilder content: () -> Content) {
+    self.content = content()
   }
-  
-  var historyButton: some View {
-    Button(
-      action: {
-        showHistory = true
-      }, label: {
-        Text("History")
-          .fontWeight(.bold)
-      })
-    .buttonStyle(EmbossedButtonStyle())
-  }
-  
-  var reportsButton: some View {
-    Button(action: {
-      showReports = true
-    }, label: {
-      Text("Reports")
-        .fontWeight(.bold)
-    })
-    .buttonStyle(EmbossedButtonStyle())
-  }
-  
-  var buttonHStack: some View {
-    HStack(spacing: 40) {
-      historyButton
-      reportsButton
-    }
-    .padding(10)
-  }
-  
+
   var body: some View {
-    GeometryReader { geometry in
-      VStack {
-        HeaderView(selectedTab: $selectedTab, titleText: "Welcome")
-        Spacer()
-        // Container View
-        
-        ContainerView {
-          ViewThatFits {
-            VStack {
-              WelcomeView.images
-              WelcomeView.welcomeText
-              getStartedButton
-              Spacer()
-              buttonHStack
-            }
-            VStack {
-              WelcomeView.welcomeText
-              getStartedButton
-              Spacer()
-              buttonHStack
-            }
+    ZStack {
+      content
+        .background(
+          GeometryReader { geometry in
+            Circle()
+              .inset(by: -4)
+              .stroke(Color("background"), lineWidth: 8)
+              .shadow(color: Color("drop-shadow").opacity(0.5), radius: 6, x: 6, y: 6)
+              .shadow(color: Color("drop-highlight"), radius: 6, x: -6, y: -6)
+              .foregroundColor(Color("background"))
+              .clipShape(Circle().inset(by: -1))
+              .resized(size: geometry.size)
           }
-        }
-        .frame(height: geometry.size.height * 0.8)
-      }
-      .sheet(isPresented: $showHistory) {
-        HistoryView(showHistory: $showHistory)
-      }
-      .sheet(isPresented: $showReports) {
-        BarChartWeekView()
-      }
-      
+        )
     }
   }
 }
 
-#Preview {
-  WelcomeView(selectedTab: .constant(9))
-    .environmentObject(HistoryStore(preview: true))
+private extension View {
+  func resized(size: CGSize) -> some View {
+    self
+      .frame(
+        width: max(size.width, size.height),
+        height: max(size.width, size.height))
+      .offset(y: -max(size.width, size.height) / 2
+        + min(size.width, size.height) / 2)
+  }
+}
+
+struct IndentView_Previews: PreviewProvider {
+  static var previews: some View {
+    VStack {
+      IndentView {
+        Text("5")
+          .font(.system(size: 90, design: .rounded))
+          .frame(width: 120, height: 120)
+      }
+      .padding(.bottom, 50)
+      IndentView {
+        Image(systemName: "hare.fill")
+          .font(.largeTitle)
+          .foregroundColor(.purple)
+          .padding(20)
+      }
+    }
+  }
 }

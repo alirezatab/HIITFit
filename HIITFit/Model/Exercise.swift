@@ -39,7 +39,7 @@ struct Exercise {
   enum ExerciseEnum: String {
     case squat = "Squat"
     case stepUp = "Step Up"
-    case burpees = "Burpee"
+    case burpee = "Burpee"
     case sunSalute = "Sun Salute"
   }
 }
@@ -55,10 +55,17 @@ extension Exercise {
       exerciseName: ExerciseEnum.stepUp.rawValue,
       videoName: "step-up"),
     Exercise(
-      exerciseName: ExerciseEnum.burpees.rawValue,
+      exerciseName: ExerciseEnum.burpee.rawValue,
       videoName: "burpee"),
     Exercise(
       exerciseName: ExerciseEnum.sunSalute.rawValue,
       videoName: "sun-salute")
+  ]
+  
+  static let names: [String] = [
+    ExerciseEnum.squat.rawValue,
+    ExerciseEnum.stepUp.rawValue,
+    ExerciseEnum.burpee.rawValue,
+    ExerciseEnum.sunSalute.rawValue
   ]
 }
